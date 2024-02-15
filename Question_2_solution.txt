@@ -1,0 +1,135 @@
+// replit: ( https://replit.com/@rambahadurregmi/take-home-programming-test#main.cs )
+// Program: (Question 2)
+
+
+using System;
+
+class Program
+{
+    public static void Main(string[] args)
+    {
+        // PyramidCalculations();
+        MeasureEconomyByGrowthRate();
+    }
+
+    
+
+    public static void MeasureEconomyByGrowthRate()
+    {
+        Console.Write("Enter the number of countries: ");
+        int a = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter the number of years: ");
+        int n = Convert.ToInt32(Console.ReadLine());
+        string[] countryNames = new string[a];
+        double[][] GDPValues = new double[a][];
+        double[][] GRValues = new double[a][];
+        double[] BVs = new double[a];
+        for (int i = 0; i < a; i++)
+        {
+            GDPValues[i] = new double[n];
+            GRValues[i] = new double[n];
+            Console.Write($"Enter the name of country {i + 1}: ");
+            countryNames[i] = Console.ReadLine();
+            Console.WriteLine($"\nCountry {countryNames[i]}");
+            Console.WriteLine("-------------------------------------------");
+            Console.Write($"Enter the begining GDP value: ");
+            BVs[i] = Convert.ToDouble(Console.ReadLine());
+            for (int j = 0; j < n; j++)
+            {
+                Console.Write($"Enter the end of year {j + 1} GDP value: ");
+                GDPValues[i][j] = Convert.ToDouble(Console.ReadLine());
+                if (j == 0)
+                {
+                    GRValues[i][j] = CalculateGrowthRate(GDPValues[i][j], BVs[i]);
+                }
+                else
+                {
+                    GRValues[i][j] = CalculateGrowthRate(GDPValues[i][j], GDPValues[i][j - 1]);
+                }
+            }
+            Console.WriteLine();
+        }
+
+        double minSD = 30;
+        string minSDCountry = "";
+        for (int i = 0; i < a; i++)
+        {
+            Console.WriteLine($"\t\t\t\t\tCountry {countryNames[i]}");
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine("Year|\t\tGDP Value\t|\tGrowth Rate\t\t|\tRanking");
+            Console.WriteLine("-------------------------------------------------------");
+            double sum_annum_gr = 0;
+            for (int j = 0; j < n; j++)
+            {
+                Console.WriteLine($"{j + 1}\t|\t${GDPValues[i][j].ToString("#,##0.00")}\t|\t\t{GRValues[i][j]:f2}%\t\t|\t{EvaluateRanking(GRValues[i][j])}");
+                sum_annum_gr += GRValues[i][j];
+
+            }
+            Console.Write($"Average Annual Growth Rate: {(sum_annum_gr / n):f2}%\n");
+            Console.Write($"Compound Annual Growth Rate: {CalculateCompoundAGR(GDPValues[i][n - 1], BVs[i], n):f2}%\n");
+            Console.Write($"Standard Deviation: {Math.Round(CalculateStandardDeviation(GRValues[i]), 3)}\n\n");
+            if (CalculateStandardDeviation(GRValues[i]) < minSD)
+            {
+                minSD = CalculateStandardDeviation(GRValues[i]);
+                minSDCountry = countryNames[i];
+            }
+
+        }
+        if (minSD < 25)
+        {
+            Console.WriteLine($"\nThe Country {minSDCountry}'s economy is most stable.");
+        }
+        else
+        {
+            Console.WriteLine($"\nThe Country {minSDCountry}'s economy is least risky.");
+        }
+
+
+
+
+
+
+    }
+    public static double CalculateGrowthRate(double EV, double BV)
+    {
+        return ((EV - BV) / BV) * 100;
+    }
+    public static string EvaluateRanking(double GR)
+    {
+        if (GR > 25)
+        {
+            return "Exceptional";
+        }
+        else if (GR > 0)
+        {
+            return "Good";
+        }
+        else
+        {
+            return "Poor";
+        }
+
+    }
+
+    public static double CalculateCompoundAGR(double EV, double BV, double N)
+    {
+        return (Math.Pow(EV / BV, 1 / N) - 1) * 100;
+    }
+    public static double CalculateStandardDeviation(double[] data)
+    {
+        double sum = 0;
+        for (int i = 0; i < data.Length; i++)
+        {
+            sum += data[i];
+        }
+        double mean = sum / data.Length;
+        double sumOfSquares = 0;
+        for (int j = 0; j < data.Length; j++)
+        {
+            sumOfSquares += Math.Pow(data[j] - mean, 2);
+        }
+        double standardDeviation = Math.Sqrt(sumOfSquares / (data.Length - 1));
+        return (standardDeviation);
+
+    }
+}

@@ -1,0 +1,130 @@
+----------------------------------------------------------------------------------------
+-- replit link (https://replit.com/@rambahadurregmi/take-home-programming-test-SQL#main.sql) 
+----------------------------------------------------------------------------------------
+
+----------------------
+-- initial table
+----------------------
+
+
+create table sold_products (
+  "Product Name" varchar(255),
+  "Category Id" varchar(255),
+  "Category" varchar(255),
+  "Year" int,
+  "Quantity Purchased" int
+);
+
+
+insert into sold_products ("Product Name", "Category Id", "Category", "Year", "Quantity Purchased") values  
+  ('Shampoo', "006", 'Health and beauty', 2020, 10070),
+  ('Bowl', "005", 'Home and lifestyle', 2021, 210),
+  ('Potato', "002", 'Produce', 2021, 30130),
+  ('Protein Powder', "001", 'Sports and travel', 2022, 400),
+  ('Energy Drink', "001", 'Sports and travel', 2020, 834),
+  ('Light Bulbs', "005", 'Home and lifestyle', 2022, 900),
+  ('Baking Powder', "004", 'Baking', 2020, 5000),
+  ('Skimmed Milk', "003", 'Diary', 2021, 300000),
+  ('Yogurt', "003", 'Diary', 2020, 98700),
+  ('Cake Mix', "004", 'Baking', 2020, 720),
+  ('Lotion', "006", 'Health and beauty', 2020, 100),
+  ('Grapes', "002", 'Produce', 2020, 59000),
+  ('Hand Soap', "006", 'Health and beauty', 2021, 89211),
+  ('Flour', "004", 'Baking', 2021, 39091),
+  ('Brownie Mix', "004", 'Baking', 2021, 2131),
+  ('Tomato', "002", 'Produce', 2021, 653);
+
+
+select * from sold_products;
+
+
+
+
+
+
+----------------------
+-- Queries for (3.1)
+----------------------
+
+
+
+CREATE TABLE products (
+  "Product Name" varchar(255),
+  "Category Id" varchar(255),
+  "Year" int,
+  "Quantity Purchased" int,
+  PRIMARY KEY ("Product Name", "Category Id", "Year")
+);
+
+
+
+CREATE TABLE categories (
+  "Category Id" varchar(255) PRIMARY KEY,
+  "Category" varchar(255)
+);
+
+
+
+INSERT INTO products ("Product Name", "Category Id", "Year", "Quantity Purchased") VALUES
+('Shampoo', "006", 2020, 10070),
+('Energy Drink', "001", 2020, 834),
+('Baking Powder', "004", 2020, 5000),
+('Yogurt', "003", 2020, 98700),
+('Cake Mix', "004", 2020, 720),
+('Lotion', "006", 2020, 100),
+('Bowl', "005", 2021, 210),
+('Potato', "002", 2021, 30130),
+('Skimmed Milk', "003", 2021, 300000),
+('Hand Soap', "006", 2021, 89211),
+('Flour', "004", 2021, 39091),
+('Brownie Mix', "004", 2021, 2131),
+('Tomato', "002", 2021, 653),
+('Protein Powder', "001", 2022, 400),
+('Light Bulbs', "005", 2022, 900),
+('Grapes', "002", 2020, 59000);
+
+
+
+INSERT INTO categories ("Category Id", "Category") VALUES
+("001", 'Sports and travel'),
+("002", 'Produce'),
+("003", 'Diary'),
+("004", 'Baking'),
+("005", 'Home and lifestyle'),
+("006", 'Health and beauty');
+
+
+
+select * from products;
+
+
+
+select * from categories;
+
+
+
+----------------------
+-- Queries for (3.2)
+----------------------
+
+
+
+SELECT
+    c."Category Id" AS Category_Id,
+    c.Category AS Category,
+    p.Year AS Year,
+    SUM(p."Quantity Purchased") AS TotQuantity
+FROM
+    products p
+JOIN
+    categories c ON p."Category Id" = c."Category Id"
+GROUP BY
+    c.Category, p.Year
+ORDER BY
+    c.Category, p.Year;
+    
+    
+    
+    
+    
+    

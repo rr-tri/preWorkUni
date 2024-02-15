@@ -1,0 +1,40 @@
+// replit: ( https://replit.com/@rambahadurregmi/take-home-programming-test#main.cs )
+// Program: (Question 1)
+
+
+using System;
+
+class Program
+{
+    public static void Main(string[] args)
+    {
+        PyramidCalculations();
+        // MeasureEconomyByGrowthRate();
+    }
+
+    public static void PyramidCalculations()
+    {
+        Console.WriteLine("The program prints the volume, LSA, TSA and slant height of a square pyramid \nwith height h being an odd number ranging from 1 to N and side length a");
+        Console.Write("Enter the value for N: ");
+        int N = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter the length of side a: ");
+        int a = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("\nHeight\t\tVolume\t\tLateral Surface Area\tTotal Surface Area\t\tSlant Height");
+        Console.WriteLine("-------------------------------------------------------------------------------------");
+
+        for (int i = 1; i <= N; i += 2)
+        {
+            if (i % 2 != 0)
+            {
+                double volume = (Math.Pow(a, 2) * i) / 3;
+                double LSA = a * Math.Sqrt(Math.Pow(a, 2) + 4 * Math.Pow(i, 2));
+                double TSA = (Math.Pow(a, 2) + LSA);
+                double slantHeight = (LSA / (2 * a));
+                Console.WriteLine($"{i}\t\t\t{volume:f0} m³\t\t{LSA:f3} m²\t\t\t\t{TSA:f3} m²\t\t\t\t{slantHeight:f3} m");
+            }
+        }
+    }
+    
+ } 
+
